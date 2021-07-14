@@ -1,40 +1,52 @@
 defmodule Day1 do
+  @init_state %{
+    direction: "N",
+    x_coord: 0,
+    y_coord: 0,
+    seen: MapSet.new([{0, 0}]),
+    hq_loc: nil
+  }
+  @type state() :: map()
+
+  @spec main() :: :ok
   def main do
-    input = parse_input()
-
-    {x, y} = part_1(input)
-
-    IO.puts([
-      "**********************\n",
-      "ADVENT OF CODE - DAY 1",
-      "\n**********************\n",
-      "Part 1: #{abs(x) + abs(y)}\n",
-      "Part 2: ???"
-    ])
+    with input <- parse_input(),
+         state <- run(@init_state, input),
+         distance_travelled <- abs(state.x_coord) + abs(state.y_coord),
+         {hq_x, hq_y} <- state.hq_loc,
+         hq_distance <- abs(hq_x) + abs(hq_y) do
+      IO.puts([
+        "**********************\nADVENT OF CODE - DAY 1\n**********************\n",
+        "Part 1: ",
+        Integer.to_string(distance_travelled),
+        "\nPart 2: ",
+        Integer.to_string(hq_distance),
+        "\n"
+      ])
+    end
   end
 
-  def part_1(input) do
-    state = run_commands(input)
-
-    {state.x_coord, state.y_coord}
-  end
-
+  @spec parse_input() :: list(binary())
   defp parse_input do
     File.read!("day_1_input.txt")
     |> String.trim()
     |> String.split(", ")
   end
 
-  defp run_commands(command_list) do
-    Enum.reduce(command_list, init_state(), fn command, state ->
-      [direction | steps] = String.graphemes(command)
+  @spec run(state(), list(binary())) :: state()
+  defp run(state, []), do: state
 
+  defp run(state, [command | rest]) do
+    with {direction, steps_str} <- String.split_at(command, 1),
+         steps <- String.to_integer(steps_str) do
       state
       |> turn(direction)
       |> move(steps)
-    end)
+      |> run(rest)
+    end
   end
 
+  @spec turn(state(), binary()) :: state()
   defp turn(state, direction) do
     Map.update!(state, :direction, fn
       "N" -> if direction == "L", do: "W", else: "E"
@@ -44,19 +56,29 @@ defmodule Day1 do
     end)
   end
 
-  defp move(state, step_count) do
-    with steps <- step_count |> IO.iodata_to_binary() |> String.to_integer() do
-      case state.direction do
-        "N" -> Map.update!(state, :y_coord, &(&1 + steps))
-        "S" -> Map.update!(state, :y_coord, &(&1 - steps))
-        "E" -> Map.update!(state, :x_coord, &(&1 + steps))
-        "W" -> Map.update!(state, :x_coord, &(&1 - steps))
-      end
+  @spec move(state(), integer()) :: state()
+  defp move(state, 0), do: state
+
+  defp move(state, steps) do
+    case state.direction do
+      "N" -> Map.update!(state, :y_coord, &(&1 + 1))
+      "S" -> Map.update!(state, :y_coord, &(&1 - 1))
+      "E" -> Map.update!(state, :x_coord, &(&1 + 1))
+      "W" -> Map.update!(state, :x_coord, &(&1 - 1))
     end
+    |> check_seen()
+    |> move(steps - 1)
   end
 
-  defp init_state do
-    %{direction: "N", x_coord: 0, y_coord: 0}
+  @spec check_seen(state()) :: state()
+  defp check_seen(state) do
+    current_location = {state.x_coord, state.y_coord}
+
+    if is_nil(state.hq_loc) and current_location in state.seen do
+      Map.put(state, :hq_loc, current_location)
+    else
+      Map.update!(state, :seen, &MapSet.put(&1, current_location))
+    end
   end
 end
 
