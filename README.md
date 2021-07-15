@@ -8,4 +8,7 @@
 Regex
 
 ## Day 4
-Regex
+RegEx, list sorting
+
+## Day 5
+Infinite streams, MD5, binary encoding
