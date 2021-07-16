@@ -18,3 +18,6 @@ String parsing, functions as first-class citizens
 
 ## Day 7
 String parsing
+
+## Day 8
+Regex, modular arithmetic, IO
