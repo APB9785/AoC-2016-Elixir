@@ -24,3 +24,5 @@ Regex, modular arithmetic, IO
 
 ## Day 9
 String parsing, recursion
+
+## Day 10
