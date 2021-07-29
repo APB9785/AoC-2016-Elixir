@@ -26,3 +26,9 @@ Regex, modular arithmetic, IO
 String parsing, recursion
 
 ## Day 10
+
+## Day 12
+Simple VM
+
+## Day 13
+Pathfinding, breadth-first search
