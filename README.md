@@ -32,3 +32,6 @@ Simple VM
 
 ## Day 13
 Pathfinding, breadth-first search
+
+## Day 14
+Memoization with ETS
