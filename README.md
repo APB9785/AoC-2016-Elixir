@@ -35,3 +35,9 @@ Pathfinding, breadth-first search
 
 ## Day 14
 Memoization with ETS
+
+## Day 17
+Breadth-first search
+
+## Day 18
+Elementary cellular automaton
