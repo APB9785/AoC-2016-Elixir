@@ -41,3 +41,6 @@ Breadth-first search
 
 ## Day 18
 Elementary cellular automaton
+
+## Day 20
+Using Ranges without enumeration
