@@ -44,3 +44,6 @@ Elementary cellular automaton
 
 ## Day 20
 Using Ranges without enumeration
+
+## Day 21
+Another simple VM
