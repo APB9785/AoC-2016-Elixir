@@ -47,3 +47,12 @@ Using Ranges without enumeration
 
 ## Day 21
 Another simple VM
+
+## Day 22
+Parsing integer data for analysis
+
+## Day 23
+VM/assembly program inspection, optimization
+
+## Day 24
+BFS, Traveling Salesman Problem
