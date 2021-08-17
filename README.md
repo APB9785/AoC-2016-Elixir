@@ -56,3 +56,6 @@ VM/assembly program inspection, optimization
 
 ## Day 24
 BFS, Traveling Salesman Problem
+
+## Day 25
+VM/assembly program inspection
