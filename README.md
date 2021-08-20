@@ -26,6 +26,10 @@ Regex, modular arithmetic, IO
 String parsing, recursion
 
 ## Day 10
+Parsing, pattern matching
+
+## Day 11
+Calulated by hand
 
 ## Day 12
 Simple VM
@@ -36,11 +40,20 @@ Pathfinding, breadth-first search
 ## Day 14
 Memoization with ETS
 
+## Day 15
+Bruteforce solving algebraic equations
+
+## Day 16
+Binary transformation + checksum
+
 ## Day 17
 Breadth-first search
 
 ## Day 18
 Elementary cellular automaton
+
+## Day 19
+Josephus problem
 
 ## Day 20
 Using Ranges without enumeration
