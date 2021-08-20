@@ -1,2 +1,4 @@
 # Do not include the input data
 *.txt
+
+.DS_Store

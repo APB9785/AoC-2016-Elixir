@@ -12,7 +12,7 @@ defmodule Day24 do
   Runs in about 5s on my machine, most of which is spent on BFS to
   pre-calculate the distances.
   """
-  @type coord() :: {integer(), integer()}
+  @type coord :: {integer, integer}
 
   @spec main() :: :ok
   def main do
@@ -33,7 +33,7 @@ defmodule Day24 do
     end
   end
 
-  @spec parse_input(binary()) :: {MapSet.t(coord()), map()}
+  @spec parse_input(binary) :: {MapSet.t(coord), map}
   def parse_input(txt) do
     list = String.graphemes(txt)
     parse_input(list, {0, 0}, MapSet.new(), %{})
@@ -50,7 +50,7 @@ defmodule Day24 do
     end
   end
 
-  @spec shortest_trip(list(integer()), map(), return: boolean()) :: integer()
+  @spec shortest_trip(list(integer), map, return: boolean) :: integer
   def shortest_trip(destinations, distances, opts) do
     destinations
     |> permutations()
@@ -61,7 +61,7 @@ defmodule Day24 do
     |> Enum.min()
   end
 
-  @spec trip_distance(list(integer()), map()) :: integer()
+  @spec trip_distance(list(integer), map) :: integer
   def trip_distance(trip, distance_map) do
     trip
     |> Stream.chunk_every(2, 1, :discard)
@@ -76,7 +76,7 @@ defmodule Day24 do
     |> List.to_tuple()
   end
 
-  @spec map_distances(map(), MapSet.t(coord())) :: map()
+  @spec map_distances(map, MapSet.t(coord)) :: map
   def map_distances(landmarks, walls) do
     map_distances(landmarks, walls, 0, 1, %{})
   end
@@ -96,7 +96,7 @@ defmodule Day24 do
     map_distances(landmarks, walls, x, y + 1, Map.put(done, {x, y}, d))
   end
 
-  @spec distance(coord(), coord(), MapSet.t(coord())) :: integer()
+  @spec distance(coord, coord, MapSet.t(coord)) :: integer
   def distance(start_coord, destination, walls) do
     distance([start_coord], MapSet.new(), 0, destination, walls)
   end
@@ -114,7 +114,7 @@ defmodule Day24 do
     distance(t, new_seen, count, destination, walls)
   end
 
-  @spec possible_moves(coord(), MapSet.t(coord())) :: MapSet.t(coord())
+  @spec possible_moves(coord, MapSet.t(coord)) :: MapSet.t(coord)
   def possible_moves({x, y}, walls) do
     [{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}]
     |> Enum.reject(&MapSet.member?(walls, &1))

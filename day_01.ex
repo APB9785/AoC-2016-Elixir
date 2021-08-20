@@ -6,7 +6,7 @@ defmodule Day1 do
     seen: MapSet.new([{0, 0}]),
     hq_loc: nil
   }
-  @type state() :: map()
+  @type state :: map
 
   @spec main() :: :ok
   def main do
@@ -26,14 +26,14 @@ defmodule Day1 do
     end
   end
 
-  @spec parse_input() :: list(binary())
+  @spec parse_input() :: list(binary)
   defp parse_input do
     File.read!("day_1_input.txt")
     |> String.trim()
     |> String.split(", ")
   end
 
-  @spec run(state(), list(binary())) :: state()
+  @spec run(state, list(binary)) :: state
   defp run(state, []), do: state
 
   defp run(state, [command | rest]) do
@@ -46,7 +46,7 @@ defmodule Day1 do
     end
   end
 
-  @spec turn(state(), binary()) :: state()
+  @spec turn(state, binary) :: state
   defp turn(state, direction) do
     Map.update!(state, :direction, fn
       "N" -> if direction == "L", do: "W", else: "E"
@@ -56,7 +56,7 @@ defmodule Day1 do
     end)
   end
 
-  @spec move(state(), integer()) :: state()
+  @spec move(state, integer) :: state
   defp move(state, 0), do: state
 
   defp move(state, steps) do
@@ -70,7 +70,7 @@ defmodule Day1 do
     |> move(steps - 1)
   end
 
-  @spec check_seen(state()) :: state()
+  @spec check_seen(state) :: state
   defp check_seen(state) do
     current_location = {state.x_coord, state.y_coord}
 

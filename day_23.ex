@@ -1,8 +1,8 @@
 defmodule Day23 do
   @registers ["a", "b", "c", "d"]
 
-  @type state() :: map()
-  @type param() :: binary() | integer()
+  @type state :: map
+  @type param :: binary | integer
 
   @spec main() :: :ok
   def main do
@@ -21,7 +21,7 @@ defmodule Day23 do
     end
   end
 
-  @spec parse_input(binary()) :: map()
+  @spec parse_input(binary) :: map
   def parse_input(txt) do
     txt
     |> String.split("\n", trim: true)
@@ -31,7 +31,7 @@ defmodule Day23 do
     |> optimize()
   end
 
-  @spec optimize(map()) :: map()
+  @spec optimize(map) :: map
   def optimize(commands) do
     commands
     |> Map.put(4, {"multiply"})
@@ -42,7 +42,7 @@ defmodule Day23 do
     |> Map.put(9, {"noop"})
   end
 
-  @spec parse_line(binary()) :: tuple()
+  @spec parse_line(binary) :: tuple
   def parse_line(line) do
     case String.split(line, " ") do
       [command, x] -> {command, parse_param(x)}
@@ -50,11 +50,11 @@ defmodule Day23 do
     end
   end
 
-  @spec parse_param(binary()) :: param()
+  @spec parse_param(binary) :: param
   def parse_param(x) when x in @registers, do: x
   def parse_param(x), do: String.to_integer(x)
 
-  @spec init_state(map(), integer()) :: state()
+  @spec init_state(map, integer) :: state
   def init_state(commands, init_val) do
     %{
       registers: %{"a" => init_val, "b" => 0, "c" => 0, "d" => 0},
@@ -63,7 +63,7 @@ defmodule Day23 do
     }
   end
 
-  @spec run(state()) :: integer()
+  @spec run(state) :: integer
   def run(state) do
     case Map.get(state.commands, state.index) do
       nil ->
@@ -111,14 +111,14 @@ defmodule Day23 do
     end
   end
 
-  @spec copy(state(), param(), param()) :: state()
+  @spec copy(state, param, param) :: state
   def copy(state, _, y) when is_integer(y), do: state
 
   def copy(state, x, y) do
     Map.update!(state, :registers, &Map.put(&1, y, get_value(state, x)))
   end
 
-  @spec toggle(state(), param()) :: state()
+  @spec toggle(state, param) :: state
   def toggle(state, x) do
     target = state.index + get_value(state, x)
 
@@ -131,7 +131,7 @@ defmodule Day23 do
     end
   end
 
-  @spec jump(state(), param(), param()) :: state()
+  @spec jump(state, param, param) :: state
   def jump(state, x, y) do
     if get_value(state, x) == 0 do
       Map.update!(state, :index, &(&1 + 1))
@@ -140,13 +140,13 @@ defmodule Day23 do
     end
   end
 
-  @spec inc_register(map(), binary()) :: map()
+  @spec inc_register(map, binary) :: map
   def inc_register(registers, key), do: Map.update!(registers, key, &(&1 + 1))
 
-  @spec dec_register(map(), binary()) :: map()
+  @spec dec_register(map, binary) :: map
   def dec_register(registers, key), do: Map.update!(registers, key, &(&1 - 1))
 
-  @spec get_value(state(), param()) :: integer()
+  @spec get_value(state, param) :: integer
   def get_value(_state, n) when is_integer(n), do: n
   def get_value(state, n), do: Map.fetch!(state.registers, n)
 end

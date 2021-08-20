@@ -1,5 +1,5 @@
 defmodule Day2 do
-  @type button() :: binary() | integer()
+  @type button :: binary | integer
 
   @spec main() :: :ok
   def main do
@@ -15,20 +15,20 @@ defmodule Day2 do
     end
   end
 
-  @spec parse_input() :: list(binary())
+  @spec parse_input() :: list(binary)
   def parse_input do
     File.read!("day_2_input.txt")
     |> String.graphemes()
   end
 
-  @spec run(list(binary()), :simple | :diamond, button(), list(binary())) :: binary()
+  @spec run(list(binary), :simple | :diamond, button, list(binary)) :: binary
   def run(todo, pattern, current \\ 5, done \\ [])
   def run([], _, _, done), do: done |> Enum.reverse() |> Enum.join()
   def run(["\n" | t], pattern, current, done), do: run(t, pattern, current, ["#{current}" | done])
   def run([h | t], :simple, current, done), do: run(t, :simple, move_1(current, h), done)
   def run([h | t], :diamond, current, done), do: run(t, :diamond, move_2(current, h), done)
 
-  @spec move_1(integer(), binary()) :: integer()
+  @spec move_1(integer, binary) :: integer
   def move_1(current, direction) do
     case direction do
       "U" -> if current <= 3, do: current, else: current - 3
@@ -38,7 +38,7 @@ defmodule Day2 do
     end
   end
 
-  @spec move_2(button(), binary()) :: button()
+  @spec move_2(button, binary) :: button
   def move_2(current, "U") do
     case current do
       x when x in [1, 2, 4, 5, 9] -> x

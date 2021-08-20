@@ -4,6 +4,7 @@ defmodule Day22 do
     with f <- File.read!("day_22_input.txt"),
          input <- parse_input(f) do
       avail = Enum.group_by(input, &trim_input(Enum.at(&1, 3)), &Enum.at(&1, 0))
+
       max_avail = avail |> Map.keys() |> Enum.max()
 
       a =
@@ -16,23 +17,30 @@ defmodule Day22 do
         |> Stream.map(fn [name, _, used, _, _] -> {name, trim_input(used)} end)
         |> Enum.reject(fn {_name, used} -> used == 0 end)
 
-      Enum.reduce(needs, 0, fn {name, needed}, acc ->
-        potential_others =
-          case a[needed] do
-            nil ->
-              []
+      res =
+        Enum.reduce(needs, 0, fn {name, needed}, acc ->
+          potential_others =
+            case a[needed] do
+              nil ->
+                []
 
-            potentials ->
-              Enum.reject(potentials, &(&1 == name))
-          end
+              potentials ->
+                Enum.reject(potentials, &(&1 == name))
+            end
 
-        acc + length(potential_others)
-      end)
-      |> IO.puts()
+          acc + length(potential_others)
+        end)
+
+      IO.puts([
+        "***********************\n",
+        "ADVENT OF CODE - DAY 22\n",
+        "***********************\n",
+        "#{res}"
+      ])
     end
   end
 
-  @spec parse_input(binary()) :: list(list(binary()))
+  @spec parse_input(binary) :: list(list(binary))
   def parse_input(txt) do
     txt
     |> String.split("\n", trim: true)
@@ -40,7 +48,7 @@ defmodule Day22 do
     |> Enum.drop(2)
   end
 
-  @spec trim_input(binary()) :: integer()
+  @spec trim_input(binary) :: integer
   def trim_input(txt) do
     txt
     |> String.slice(0..-2//1)

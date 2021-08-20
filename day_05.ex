@@ -5,13 +5,13 @@ defmodule Day5 do
   def main do
     with input_stream <- parse_input() do
       IO.puts([
-        "**********************\nADVENT OF CODE - DAY 5\n**********************",
-        "\nPart 1: ",
-        part_1(input_stream),
-        "\nPart 2: ",
-        part_2(input_stream),
-        "\n"
+        "**********************\n",
+        "ADVENT OF CODE - DAY 5\n",
+        "**********************"
       ])
+
+      IO.puts(["Part 1: ", part_1(input_stream)])
+      IO.puts(["Part 2: ", part_2(input_stream), "\n"])
     end
   end
 
@@ -24,7 +24,7 @@ defmodule Day5 do
     |> Stream.filter(&String.starts_with?(&1, "00000"))
   end
 
-  @spec part_1(Enumerable.t()) :: binary()
+  @spec part_1(Enumerable.t()) :: binary
   def part_1(input_stream) do
     input_stream
     |> Stream.take(8)
@@ -32,7 +32,7 @@ defmodule Day5 do
     |> Enum.join()
   end
 
-  @spec part_2(Enumerable.t()) :: binary()
+  @spec part_2(Enumerable.t()) :: binary
   def part_2(input_stream) do
     empty_password_map = Enum.reduce(0..7, %{}, &Map.put(&2, "#{&1}", nil))
 

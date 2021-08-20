@@ -14,7 +14,7 @@ defmodule Day6 do
     end
   end
 
-  @spec group_by_index(binary()) :: map()
+  @spec group_by_index(binary) :: map
   def group_by_index(input) do
     Enum.reduce(
       String.graphemes(input),
@@ -30,7 +30,7 @@ defmodule Day6 do
     |> elem(0)
   end
 
-  @spec decode_message(map(), fun()) :: iolist()
+  @spec decode_message(map, fun) :: iolist
   def decode_message(chars_by_index, decode_func) do
     chars_by_index
     |> Enum.reduce(

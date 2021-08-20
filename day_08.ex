@@ -4,7 +4,7 @@ defmodule Day8 do
   @y_range 0..5
   @max_y 6
 
-  @type state() :: map()
+  @type state :: map
 
   @spec main() :: :ok
   def main do
@@ -46,7 +46,7 @@ defmodule Day8 do
     |> Stream.map(&format_match/1)
   end
 
-  @spec make_state() :: state()
+  @spec make_state() :: state
   def make_state do
     for x <- @x_range,
         y <- @y_range do
@@ -55,7 +55,7 @@ defmodule Day8 do
     |> Map.new()
   end
 
-  @spec format_match(list()) :: tuple()
+  @spec format_match(list) :: tuple
   def format_match(["rect", x, y]) do
     {:rect, String.to_integer(x), String.to_integer(y)}
   end
@@ -64,7 +64,7 @@ defmodule Day8 do
     {:rotate, axis, String.to_integer(index), String.to_integer(count)}
   end
 
-  @spec run_command(tuple(), state()) :: state()
+  @spec run_command(tuple, state) :: state
   def run_command({:rotate, axis, index, count}, state) do
     Enum.reduce(state, %{}, fn {{x, y}, pixel}, acc ->
       cond do
@@ -90,13 +90,13 @@ defmodule Day8 do
     end)
   end
 
-  @spec display_screen(state()) :: iolist()
+  @spec display_screen(state) :: iolist
   def display_screen(state) do
     Enum.reduce(@y_range, [], &display_line(&1, &2, state))
     |> Enum.reverse()
   end
 
-  @spec display_line(integer(), iolist(), state()) :: iolist()
+  @spec display_line(integer, iolist, state) :: iolist
   def display_line(y, prev, state) do
     Enum.reduce(@x_range, prev, fn x, acc ->
       if Map.fetch!(state, {x, y}), do: ["█" | acc], else: [" " | acc]
@@ -104,7 +104,7 @@ defmodule Day8 do
     |> then(&["\n" | &1])
   end
 
-  @spec display_transformations(state()) :: :ok
+  @spec display_transformations(state) :: :ok
   def display_transformations(state) do
     Process.sleep(75)
 
@@ -113,7 +113,7 @@ defmodule Day8 do
     |> IO.puts()
   end
 
-  @spec wrap(integer(), binary()) :: integer()
+  @spec wrap(integer, binary) :: integer
   defp wrap(n, "x") when n in @x_range, do: n
   defp wrap(n, "x") when n < 0, do: wrap(@max_x + n, "x")
   defp wrap(n, "x"), do: wrap(n - @max_x, "x")

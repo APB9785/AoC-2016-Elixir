@@ -5,11 +5,17 @@ defmodule Day25 do
   def main do
     d = 282 * 9
 
-    Enum.find(1..99999, &valid?(&1 + d))
-    |> IO.puts()
+    res = Enum.find(1..99999, &valid?(&1 + d))
+
+    IO.puts([
+      "***********************\n",
+      "ADVENT OF CODE - DAY 25\n",
+      "***********************\n",
+      "#{res}"
+    ])
   end
 
-  @spec valid?(integer()) :: boolean()
+  @spec valid?(integer) :: boolean
   def valid?(n) do
     bin = Integer.to_string(n, 2)
     String.starts_with?(@target, bin) and String.last(bin) == "0"

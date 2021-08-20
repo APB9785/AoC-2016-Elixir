@@ -1,5 +1,7 @@
 defmodule Day21 do
-  @type state() :: [{binary(), integer()}]
+  @type command :: list(binary)
+  @type state_indexed :: list({binary, integer})
+  @type state_list :: list(binary)
 
   @state_size 8
 
@@ -25,18 +27,21 @@ defmodule Day21 do
     end
   end
 
+  @spec parse_input(binary) :: list(command)
   def parse_input(txt) do
     txt
     |> String.split("\n", trim: true)
     |> Enum.map(&String.split/1)
   end
 
+  @spec init_state() :: state_list
   def init_state do
     "abcdefghijklmnopqrstuvwxyz"
     |> String.graphemes()
     |> Enum.take(@state_size)
   end
 
+  @spec run_commands(list(command), state_list) :: binary
   def run_commands(commands, state) do
     commands
     |> Enum.reduce(Enum.with_index(state), &run_command/2)
@@ -44,6 +49,7 @@ defmodule Day21 do
     |> Enum.join()
   end
 
+  @spec run_command(command, state_indexed) :: state_indexed
   def run_command(command, state) do
     case command do
       ["rotate", "based" | rest] -> rotate_based(rest, state)
@@ -55,7 +61,7 @@ defmodule Day21 do
     end
   end
 
-  def swap_position([x, "with", "position", y], state) do
+  defp swap_position([x, "with", "position", y], state) do
     [x, y] = Enum.map([x, y], &String.to_integer/1)
 
     Enum.map(state, fn el ->
@@ -67,7 +73,7 @@ defmodule Day21 do
     end)
   end
 
-  def swap_letter([x, "with", "letter", y], state) do
+  defp swap_letter([x, "with", "letter", y], state) do
     Enum.map(state, fn el ->
       case el do
         {^x, idx} -> {y, idx}
@@ -77,7 +83,7 @@ defmodule Day21 do
     end)
   end
 
-  def rotate([direction, n, _], state) do
+  defp rotate([direction, n, _], state) do
     n = String.to_integer(n)
 
     Enum.map(state, fn {char, idx} ->
@@ -88,7 +94,7 @@ defmodule Day21 do
     end)
   end
 
-  def rotate_based(["on", "position", "of", "letter", x], state) do
+  defp rotate_based(["on", "position", "of", "letter", x], state) do
     case to_list(state) do
       [^x, a, b, c, d, e, f, g] -> [g, x, a, b, c, d, e, f]
       [a, ^x, b, c, d, e, f, g] -> [f, g, a, x, b, c, d, e]
@@ -102,7 +108,7 @@ defmodule Day21 do
     |> Enum.with_index()
   end
 
-  def reverse_positions([x, "through", y], state) do
+  defp reverse_positions([x, "through", y], state) do
     [x, y] = Enum.map([x, y], &String.to_integer/1)
     l = to_list(state)
     {front, rest} = Enum.split(l, x)
@@ -113,7 +119,7 @@ defmodule Day21 do
     |> Enum.with_index()
   end
 
-  def move_position([x, "to", "position", y], state) when x < y do
+  defp move_position([x, "to", "position", y], state) when x < y do
     [x, y] = Enum.map([x, y], &String.to_integer/1)
 
     Enum.map(state, fn {char, idx} ->
@@ -130,7 +136,7 @@ defmodule Day21 do
     end)
   end
 
-  def move_position([x, "to", "position", y], state) when x > y do
+  defp move_position([x, "to", "position", y], state) when x > y do
     [x, y] = Enum.map([x, y], &String.to_integer/1)
 
     Enum.map(state, fn {char, idx} ->
@@ -147,12 +153,14 @@ defmodule Day21 do
     end)
   end
 
+  @spec to_list(state_indexed) :: state_list
   def to_list(state) do
     state
     |> Enum.sort_by(&elem(&1, 1))
     |> Enum.map(&elem(&1, 0))
   end
 
+  @spec permutations(state_list) :: list(state_list)
   def permutations([]), do: [[]]
 
   def permutations(list),

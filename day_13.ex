@@ -4,7 +4,7 @@ defmodule Day13 do
   @destination {31, 39}
   @max_steps 50
 
-  @type coord() :: {integer(), integer()}
+  @type coord :: {integer, integer}
 
   require Integer
 
@@ -25,7 +25,7 @@ defmodule Day13 do
     end
   end
 
-  @spec steps_to_destination() :: integer()
+  @spec steps_to_destination() :: integer
   def steps_to_destination do
     steps_to_destination(MapSet.new([@start]), 0)
   end
@@ -39,7 +39,7 @@ defmodule Day13 do
     end
   end
 
-  @spec reachable_coords() :: MapSet.t(coord())
+  @spec reachable_coords() :: MapSet.t(coord)
   def reachable_coords do
     reachable_coords(MapSet.new([@start]), 0)
   end
@@ -53,7 +53,7 @@ defmodule Day13 do
     end
   end
 
-  @spec possible_moves(coord()) :: list(coord())
+  @spec possible_moves(coord) :: list(coord)
   def possible_moves({x, y}) do
     neighbors = [{x + 1, y}, {x - 1, y}, {x, y + 1}, {x, y - 1}]
 
@@ -61,7 +61,7 @@ defmodule Day13 do
     |> MapSet.new()
   end
 
-  @spec valid_coord?(coord()) :: boolean()
+  @spec valid_coord?(coord) :: boolean
   def valid_coord?({x, y}) when x < 0 or y < 0, do: false
 
   def valid_coord?({x, y}) do

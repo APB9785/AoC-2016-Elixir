@@ -24,7 +24,7 @@ defmodule Day3 do
     end)
   end
 
-  @spec part_2(Enumerable.t()) :: list({integer(), integer(), integer()})
+  @spec part_2(Enumerable.t()) :: list({integer, integer, integer})
   defp part_2(input_stream) do
     Enum.reduce(
       input_stream,
@@ -48,7 +48,7 @@ defmodule Day3 do
     |> Map.fetch!(:done)
   end
 
-  @spec valid_triangle?({integer(), integer(), integer()}) :: boolean()
+  @spec valid_triangle?({integer, integer, integer}) :: boolean
   defp valid_triangle?({x, y, z}) do
     case Enum.max([x, y, z]) do
       ^x -> y + z > x

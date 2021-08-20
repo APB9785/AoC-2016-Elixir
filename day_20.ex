@@ -18,7 +18,7 @@ defmodule Day20 do
     end
   end
 
-  @spec parse_input(binary()) :: blacklist()
+  @spec parse_input(binary) :: blacklist
   def parse_input(txt) do
     txt
     |> String.split("\n", trim: true)
@@ -26,13 +26,13 @@ defmodule Day20 do
     |> Enum.sort_by(fn range -> range.first end)
   end
 
-  @spec text_to_range(binary()) :: Range.t()
+  @spec text_to_range(binary) :: Range.t()
   def text_to_range(line) do
     [lo, hi] = String.split(line, "-")
     Range.new(String.to_integer(lo), String.to_integer(hi))
   end
 
-  @spec lowest_outside(blacklist()) :: integer()
+  @spec lowest_outside(blacklist) :: integer
   def lowest_outside(blacklist) do
     lowest_outside(blacklist, 0)
   end
@@ -45,7 +45,7 @@ defmodule Day20 do
     end
   end
 
-  @spec total_allowed(blacklist()) :: integer()
+  @spec total_allowed(blacklist) :: integer
   def total_allowed(blacklist) do
     total_allowed(blacklist, 0, 0)
   end

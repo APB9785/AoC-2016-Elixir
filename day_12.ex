@@ -4,27 +4,31 @@ defmodule Day12 do
   @start_1 %{"a" => 0, "b" => 0, "c" => 0, "d" => 0}
   @start_2 %{"a" => 0, "b" => 0, "c" => 1, "d" => 0}
 
-  @type state() :: map()
+  @type state :: map
 
   @spec main() :: :ok
   def main do
-    with input <- parse_input(),
-         state_1 <- run_commands(input, [], @start_1),
-         state_2 <- run_commands(input, [], @start_2) do
+    with input <- parse_input() do
       IO.puts([
         "***********************\n",
         "ADVENT OF CODE - DAY 12\n",
-        "***********************\n",
+        "***********************"
+      ])
+
+      IO.puts([
         "Part 1: ",
-        Integer.to_string(state_1["a"]),
-        "\nPart 2: ",
-        Integer.to_string(state_2["a"]),
+        "#{input |> run_commands([], @start_1) |> Map.get("a")}"
+      ])
+
+      IO.puts([
+        "Part 2: ",
+        "#{input |> run_commands([], @start_2) |> Map.get("a")}",
         "\n"
       ])
     end
   end
 
-  @spec parse_input() :: list(binary())
+  @spec parse_input() :: list(binary)
   def parse_input do
     f = File.read!("day_12_input.txt")
 
@@ -32,7 +36,7 @@ defmodule Day12 do
     |> Enum.map(&tl/1)
   end
 
-  @spec run_commands(list(), list(), state()) :: state()
+  @spec run_commands(list, list, state) :: state
   def run_commands(todo, done, state)
 
   def run_commands([], _, state), do: state
@@ -82,7 +86,7 @@ defmodule Day12 do
     )
   end
 
-  @spec get_value(binary(), state()) :: integer()
+  @spec get_value(binary, state) :: integer
   defp get_value(key_or_value, state) do
     if key_or_value in @registers do
       Map.fetch!(state, key_or_value)

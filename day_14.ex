@@ -13,7 +13,7 @@ defmodule Day14 do
     IO.puts(["Part 2: ", "#{run(:part_2)}", "\n"])
   end
 
-  @spec run(:part_1 | :part_2) :: integer()
+  @spec run(:part_1 | :part_2) :: integer
   def run(part), do: run(0, [], part)
 
   defp run(_, found, _) when length(found) == 64, do: hd(found)
@@ -44,7 +44,7 @@ defmodule Day14 do
     end
   end
 
-  @spec hash_tuple(integer(), :part_1 | :part_2) :: {integer(), binary(), list(binary())}
+  @spec hash_tuple(integer, :part_1 | :part_2) :: {integer, binary, list(binary)}
   def hash_tuple(idx, part) do
     hash =
       case part do
@@ -65,7 +65,7 @@ defmodule Day14 do
     {idx, triple, fives}
   end
 
-  @spec has_fiver?(integer(), binary(), :part_1 | :part_2) :: boolean()
+  @spec has_fiver?(integer, binary, :part_1 | :part_2) :: boolean
   def has_fiver?(idx, triple, part) do
     case :ets.lookup(part, idx) do
       [{_, _, fives}] ->
@@ -78,7 +78,7 @@ defmodule Day14 do
     end
   end
 
-  @spec md5(binary(), integer()) :: binary()
+  @spec md5(binary, integer) :: binary
   def md5(text, 0), do: text
 
   def md5(text, count) do

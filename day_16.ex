@@ -1,7 +1,7 @@
 defmodule Day16 do
   @input "10010000000110000"
 
-  @type state() :: list(boolean())
+  @type state :: list(boolean)
 
   @spec main() :: :ok
   def main do
@@ -20,14 +20,14 @@ defmodule Day16 do
     end
   end
 
-  @spec parse_input(binary()) :: state()
+  @spec parse_input(binary) :: state
   def parse_input(str) do
     str
     |> String.graphemes()
     |> Enum.map(&(&1 == "1"))
   end
 
-  @spec extend(state(), integer()) :: state()
+  @spec extend(state, integer) :: state
   def extend(state, end_size) do
     extend(state, end_size, length(state))
   end
@@ -41,13 +41,13 @@ defmodule Day16 do
     end
   end
 
-  @spec flip_reverse(state()) :: state()
+  @spec flip_reverse(state) :: state
   defp flip_reverse(state) do
     Stream.map(state, &not/1)
     |> Enum.reverse()
   end
 
-  @spec compress(state(), integer()) :: binary()
+  @spec compress(state, integer) :: binary
   def compress(state, start_size) do
     chunk_size = calculate_chunk_size(start_size)
     chunks = Enum.chunk_every(state, chunk_size)
@@ -59,7 +59,7 @@ defmodule Day16 do
     |> Enum.reverse()
   end
 
-  @spec calculate_chunk_size(integer()) :: integer()
+  @spec calculate_chunk_size(integer) :: integer
   def calculate_chunk_size(len, multiplier \\ 1) do
     if rem(len, 2) == 0 do
       calculate_chunk_size(div(len, 2), multiplier * 2)

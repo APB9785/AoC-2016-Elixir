@@ -1,6 +1,6 @@
 defmodule Day10 do
-  @type chip() :: integer()
-  @type state() :: map()
+  @type chip :: integer
+  @type state :: map
 
   @spec main() :: :ok
   def main do
@@ -22,14 +22,14 @@ defmodule Day10 do
     |> Stream.map(&format_match/1)
   end
 
-  @spec format_match(list()) :: tuple()
+  @spec format_match(list) :: tuple
   def format_match([value, "bot", bot]), do: {String.to_integer(bot), String.to_integer(value)}
 
   def format_match([bot, type_1, id_1, type_2, id_2]) do
     {String.to_integer(bot), {type_1, String.to_integer(id_1)}, {type_2, String.to_integer(id_2)}}
   end
 
-  @spec make_state(Enumerable.t()) :: state()
+  @spec make_state(Enumerable.t()) :: state
   def make_state(rules) do
     Enum.reduce(rules, %{}, fn
       {bot, chip}, acc -> add_chip(acc, bot, chip)
@@ -37,21 +37,21 @@ defmodule Day10 do
     end)
   end
 
-  @spec add_chip(state(), integer(), integer()) :: state()
+  @spec add_chip(state, integer, integer) :: state
   def add_chip(state, bot, chip) do
     Map.update(state, bot, %{holding: [chip]}, fn this ->
       Map.update!(this, :holding, &[chip | &1])
     end)
   end
 
-  @spec set_bot_rules(state(), integer(), tuple(), tuple()) :: state()
+  @spec set_bot_rules(state, integer, tuple, tuple) :: state
   def set_bot_rules(state, bot, low, high) do
     Map.update(state, bot, %{holding: [], give_low: low, give_high: high}, fn this ->
       this |> Map.put(:give_low, low) |> Map.put(:give_high, high)
     end)
   end
 
-  @spec run(state()) :: integer()
+  @spec run(state) :: integer
   def run(state) do
     Enum.reduce(state, state, fn {bot_id, bot_map}, acc ->
       cond do
@@ -80,12 +80,12 @@ defmodule Day10 do
     )
   end
 
-  @spec all_outputs_present?(state()) :: list(integer()) | nil
+  @spec all_outputs_present?(state) :: list(integer) | nil
   def all_outputs_present?(state) do
     state["output-0"] && state["output-1"] && state["output-2"]
   end
 
-  @spec give_chip(state(), integer(), {binary(), integer()}) :: state()
+  @spec give_chip(state, integer, {binary, integer}) :: state
   def give_chip(state, chip, {"output", id}) do
     Map.update(state, "output-#{id}", [chip], &[chip | &1])
   end
@@ -96,7 +96,7 @@ defmodule Day10 do
     end)
   end
 
-  @spec print_header(integer()) :: :ok
+  @spec print_header(integer) :: :ok
   defp print_header(bot_id) do
     IO.puts([
       "***********************\nADVENT OF CODE - DAY 10\n***********************",

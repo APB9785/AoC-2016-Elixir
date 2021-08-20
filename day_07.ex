@@ -1,7 +1,7 @@
 defmodule Day7 do
   @brackets ["[", "]"]
 
-  @type state() :: map()
+  @type state :: map
 
   @spec main() :: :ok
   def main do
@@ -17,13 +17,13 @@ defmodule Day7 do
     end
   end
 
-  @spec parse_input() :: list(binary())
+  @spec parse_input() :: list(binary)
   def parse_input do
     File.read!("day_7_input.txt")
     |> String.split("\n", trim: true)
   end
 
-  @spec check_all(list(binary()), atom()) :: binary()
+  @spec check_all(list(binary), atom) :: binary
   def check_all(input, :tls) do
     input
     |> Stream.map(&check_line_tls/1)
@@ -40,7 +40,7 @@ defmodule Day7 do
 
   ## PART 1 - TLS
 
-  @spec check_line_tls(binary()) :: state()
+  @spec check_line_tls(binary) :: state
   def check_line_tls(line) do
     parse_tls(%{
       todo: String.graphemes(line),
@@ -50,7 +50,7 @@ defmodule Day7 do
     })
   end
 
-  @spec parse_tls(state()) :: state()
+  @spec parse_tls(state) :: state
   def parse_tls(%{todo: [a, b, b, a]} = state)
       when a != b and a not in @brackets and b not in @brackets do
     Map.put(state, :found_outside, true)
@@ -79,7 +79,7 @@ defmodule Day7 do
 
   ## PART 2 - SSL
 
-  @spec check_line_ssl(binary()) :: state()
+  @spec check_line_ssl(binary) :: state
   def check_line_ssl(line) do
     parse_ssl(%{
       todo: String.graphemes(line),
@@ -89,7 +89,7 @@ defmodule Day7 do
     })
   end
 
-  @spec parse_ssl(state()) :: state()
+  @spec parse_ssl(state) :: state
   def parse_ssl(%{todo: [a, b, a]} = state)
       when a != b and a not in @brackets and b not in @brackets do
     Map.update!(state, :found_outside, &[Enum.join([a, b, a]) | &1])
@@ -122,7 +122,7 @@ defmodule Day7 do
 
   def parse_ssl(state), do: state |> Map.update!(:todo, &tl/1) |> parse_ssl()
 
-  @spec compare_matches(Enumerable.t()) :: boolean()
+  @spec compare_matches(Enumerable.t()) :: boolean
   def compare_matches(state) do
     Enum.reduce_while(state.found_inside, false, fn bab, _acc ->
       if invert(bab) in state.found_outside do
@@ -133,7 +133,7 @@ defmodule Day7 do
     end)
   end
 
-  @spec invert(binary()) :: binary()
+  @spec invert(binary) :: binary
   defp invert(input) do
     with [a, b, a] <- String.graphemes(input) do
       Enum.join([b, a, b])

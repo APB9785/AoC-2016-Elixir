@@ -1,7 +1,7 @@
 defmodule Day17 do
   @salt "gdjjyniy"
 
-  @type states() :: MapSet.t(map())
+  @type states :: MapSet.t(map)
 
   @spec main() :: :ok
   def main do
@@ -19,7 +19,7 @@ defmodule Day17 do
     end
   end
 
-  @spec shortest_path(states()) :: binary()
+  @spec shortest_path(states) :: binary
   def shortest_path(states) do
     done = Enum.filter(states, &(&1.x == 3 and &1.y == 3))
 
@@ -32,7 +32,7 @@ defmodule Day17 do
     end
   end
 
-  @spec longest_path(states()) :: integer()
+  @spec longest_path(states) :: integer
   def longest_path(states, max_path \\ 0) do
     if MapSet.size(states) == 0 do
       max_path
@@ -45,7 +45,7 @@ defmodule Day17 do
     end
   end
 
-  @spec next_gen(states()) :: states()
+  @spec next_gen(states) :: states
   def next_gen(states) do
     Enum.reduce(states, MapSet.new(), fn s, acc ->
       doors = next_doors(s)
@@ -54,7 +54,7 @@ defmodule Day17 do
     end)
   end
 
-  @spec move(map(), binary()) :: map()
+  @spec move(map, binary) :: map
   def move(state, direction) do
     case direction do
       "U" -> state |> Map.update!(:y, &(&1 - 1)) |> Map.update!(:path, &(&1 <> "U"))
@@ -64,14 +64,14 @@ defmodule Day17 do
     end
   end
 
-  @spec next_doors(map()) :: MapSet.t(binary())
+  @spec next_doors(map) :: MapSet.t(binary)
   def next_doors(state) do
     open = open_doors(state.path)
     possible = possible_doors(state.x, state.y)
     MapSet.intersection(open, possible)
   end
 
-  @spec possible_doors(integer(), integer()) :: MapSet.t(binary())
+  @spec possible_doors(integer, integer) :: MapSet.t(binary)
   def possible_doors(x, y) do
     ["U", "D", "L", "R"]
     |> Enum.filter(&(&1 != "U" or y > 0))
@@ -81,7 +81,7 @@ defmodule Day17 do
     |> MapSet.new()
   end
 
-  @spec open_doors(binary()) :: MapSet.t(binary())
+  @spec open_doors(binary) :: MapSet.t(binary)
   def open_doors(input) do
     :crypto.hash(:md5, @salt <> input)
     |> Base.encode16(case: :lower)

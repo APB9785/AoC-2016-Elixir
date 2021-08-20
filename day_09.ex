@@ -13,12 +13,12 @@ defmodule Day9 do
     end
   end
 
-  @spec parse_input() :: list(binary())
+  @spec parse_input() :: list(binary)
   def parse_input do
     File.read!("day_9_input.txt") |> String.graphemes() |> Enum.reject(&(&1 in [" ", "\n"]))
   end
 
-  @spec count(list(binary()), integer(), integer()) :: integer()
+  @spec count(list(binary), integer, integer) :: integer
   def count(todo, version, n \\ 0)
 
   def count([], _, n), do: n

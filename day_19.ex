@@ -43,27 +43,30 @@ defmodule Day19 do
     Enum.each(1..100, &IO.inspect({&1, part_2_test(&1)}))
   end
 
+  @spec part_2_test(integer) :: integer
   def part_2_test(n) do
     1..n
     |> Enum.to_list()
     |> loop()
   end
 
-  def loop([n]), do: n
+  defp loop([n]), do: n
 
-  def loop(list) do
+  defp loop(list) do
     list
     |> delete_midpoint()
     |> rotate()
     |> loop()
   end
 
+  @spec delete_midpoint(list) :: list
   def delete_midpoint(list) do
     len = length(list)
     idx = div(len, 2)
     List.delete_at(list, idx)
   end
 
+  @spec rotate(list) :: list
   def rotate([h | rest]), do: rest ++ [h]
 end
 

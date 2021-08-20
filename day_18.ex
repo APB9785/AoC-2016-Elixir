@@ -1,5 +1,5 @@
 defmodule Day18 do
-  @type state() :: MapSet.t(integer())
+  @type state :: MapSet.t(integer)
 
   @spec main() :: :ok
   def main do
@@ -12,11 +12,11 @@ defmodule Day18 do
       ])
 
       IO.puts(["Part 1: ", "#{count_gens(init_state, 40)}"])
-      IO.puts(["\nPart 2: ", "#{count_gens(init_state, 400_000)}", "\n"])
+      IO.puts(["Part 2: ", "#{count_gens(init_state, 400_000)}", "\n"])
     end
   end
 
-  @spec parse_input(binary()) :: state()
+  @spec parse_input(binary) :: state
   def parse_input(s) do
     s
     |> String.graphemes()
@@ -26,7 +26,7 @@ defmodule Day18 do
     |> MapSet.new()
   end
 
-  @spec count_gens(state(), integer(), integer()) :: integer()
+  @spec count_gens(state, integer, integer) :: integer
   def count_gens(state, gens, count \\ 0)
   def count_gens(_, 0, count), do: count
 
@@ -38,14 +38,14 @@ defmodule Day18 do
     )
   end
 
-  @spec next_gen(state()) :: state()
+  @spec next_gen(state) :: state
   def next_gen(state) do
     Enum.reduce(0..99, MapSet.new(), fn x, acc ->
       if valid?(state, x), do: MapSet.put(acc, x), else: acc
     end)
   end
 
-  @spec valid?(state(), integer()) :: boolean()
+  @spec valid?(state, integer) :: boolean
   def valid?(state, idx) do
     left = MapSet.member?(state, idx - 1)
     right = MapSet.member?(state, idx + 1)
