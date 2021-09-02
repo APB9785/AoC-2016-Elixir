@@ -1,6 +1,6 @@
 defmodule Day24 do
   @moduledoc """
-  First we parse the input grid into a Map for coord lookup in constant time.
+  First we parse the input grid into a Map for fast coord lookup.
 
   Then calculate and store the distances from each landmark to each other
   landmark, using breadth-first search.
